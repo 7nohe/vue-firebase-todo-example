@@ -12,7 +12,6 @@
 <script>
 import TodoForm from "./TodoForm";
 import TodoList from "./TodoList";
-import firebase from "firebase";
 
 export default {
   name: "TodoApp",
@@ -47,7 +46,7 @@ export default {
     }
   },
   created() {
-    this.collection = firebase.firestore().collection("todo");
+    this.collection = this.$firebase.firestore().collection("todo");
     this.fetchTodos();
   }
 };
