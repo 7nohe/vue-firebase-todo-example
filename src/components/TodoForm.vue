@@ -32,13 +32,14 @@ export default {
   data() {
     return {
       newTodo: "",
-      newDesc: ""
+      newDesc: "",
+      db: this.$firebase.firestore()
     };
   },
   methods: {
     onClickCreate() {
       if (!this.newTodo) return;
-      this.$emit("create-todo", {
+      this.db.collection("todo").add({
         todo: this.newTodo,
         description: this.newDesc
       });

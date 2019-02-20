@@ -7,8 +7,8 @@
       <div class="content">
         <template v-for="(todo, index) in todos">
           <div class="box" :key="`box-${index}`">
-            <a @click="onClickOpenModal(todo);">{{ todo.todo }}</a>
             <div style="float: right;" class="delete is-large" @click="onClickDeleteTodo(todo);"/>
+            <a @click="onClickOpenModal(todo);">{{ todo.todo }}</a>
           </div>
         </template>
         <b-modal :active.sync="isActive" has-modal-card>
@@ -36,19 +36,15 @@ const todoModal = {
 export default {
   name: "TodoList",
   components: { todoModal },
-  props: {
-    todos: {
-      type: Array,
-      default: () => []
-    }
-  },
   data() {
     return {
+      todos: [],
       isActive: false,
       modal: {
         todo: "",
         description: ""
-      }
+      },
+      db: this.$firebase.firestore()
     };
   },
   methods: {
@@ -56,9 +52,25 @@ export default {
       this.isActive = true;
       this.modal = { ...todo };
     },
-    onClickDeleteTodo(index) {
-      this.$emit("delete-todo", index);
+    onClickDeleteTodo(todo) {
+      this.db
+        .collection("todo")
+        .doc(todo.id)
+        .delete()
+        .then(() => {
+          console.log("successfully deleted");
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
+  },
+  created() {
+    this.db.collection("todo").onSnapshot(snaps => {
+      this.todos = snaps.docs.map(doc => {
+        return { id: doc.id, ...doc.data() };
+      });
+    });
   }
 };
 </script>

@@ -1,10 +1,10 @@
 <template>
   <div class="title is-ancestor">
     <div class="tile is-vertical is-12 is-parent is-primary">
-      <todo-form @create-todo="createTodo"/>
+      <todo-form/>
     </div>
     <div class="tile is-vertical is-12 is-parent is-danger">
-      <todo-list :todos="todos" @delete-todo="deleteTodo"/>
+      <todo-list/>
     </div>
   </div>
 </template>
@@ -17,37 +17,7 @@ export default {
   name: "TodoApp",
   components: { TodoForm, TodoList },
   data() {
-    return {
-      todos: [],
-      collection: null
-    };
-  },
-  methods: {
-    fetchTodos() {
-      this.collection.onSnapshot(snaps => {
-        this.todos = snaps.docs.map(doc => {
-          return { id: doc.id, ...doc.data() };
-        });
-      });
-    },
-    createTodo(newTodo) {
-      this.collection.add(newTodo);
-    },
-    deleteTodo(todo) {
-      this.collection
-        .doc(todo.id)
-        .delete()
-        .then(() => {
-          console.log("successfully deleted");
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-  },
-  created() {
-    this.collection = this.$firebase.firestore().collection("todo");
-    this.fetchTodos();
+    return {};
   }
 };
 </script>
