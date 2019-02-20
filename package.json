@@ -9,6 +9,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
+    "@firebase/testing": "^0.7.2",
     "buefy": "^0.7.2",
     "firebase": "^5.8.3",
     "vue": "^2.5.22"
