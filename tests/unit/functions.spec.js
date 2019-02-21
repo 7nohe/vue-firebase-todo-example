@@ -1,4 +1,5 @@
 import myFunctions from "../../functions/index";
+import sinon from 'sinon';
 
 const fft = require("firebase-functions-test")();
 
@@ -15,13 +16,19 @@ describe("helloworld", () => {
   });
 });
 
-// describe("createUsername", () => {
-//   test("shoud create username from email", () => {
-//     const snap = fft.firestore.makeDocumentSnapshot(
-//       { email: "7nohe@example.com" },
-//       "user/test-user-id"
-//     );
-//     const wrapped = fft.wrap(myFunctions.createUsername);
-//     wrapped(snap, { params: { userId: "user-id-12345" } });
-//   });
-// });
+describe("createUsername", () => {
+  test("shoud create username from email", () => {
+    const setStub = sinon.stub();
+    const snap = {
+      data: () => ({
+        email: '7nohe@example.com'
+      }),
+      ref: {
+        set: setStub
+      }
+    }
+    setStub.withArgs({ username: '7nohe' }, { merge: true }).returns(true);
+    const wrapped = fft.wrap(myFunctions.createUsername);
+    expect(wrapped(snap, { params: { userId: "user-id-12345" } })).toBe(true);
+  });
+});
