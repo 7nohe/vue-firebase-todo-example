@@ -1,4 +1,4 @@
-const firebase = require("@firebase/testing");
+import * as firebase from "@firebase/testing";
 import fs from "fs";
 
 const projectName = "vue-firebase-todo-example";
